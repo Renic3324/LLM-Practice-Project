@@ -16,7 +16,6 @@ logging.basicConfig(
     level=logging.INFO,  # Set logging level to INFO
     format='%(asctime)s - %(levelname)s - %(message)s',  # Define log format
     handlers=[  # Define handlers for logging
-        logging.FileHandler('logs/training4.log', encoding='utf-8'),  # Log to file
         logging.StreamHandler(sys.stdout)  # Log to standard output
     ]
 )
@@ -82,7 +81,7 @@ def load_ultrachat_data(max_samples=5000):
         logger.error(f"Failed to load UltraChat data: {e}")  # Log error
         return []  # Return empty list on failure
 
-
+'''
 def load_molding_data():
     """Function to load molding terms."""
     logger.info("Loading molding terms...")  # Log loading start
@@ -95,7 +94,7 @@ def load_molding_data():
     except Exception as e:
         logger.error(f"Error reading molding terms: {e}")  # Log error
         return []  # Return empty list on failure
-
+'''
 
 def build_vocab(sentences):
     """Function to build vocabulary from sentences."""
@@ -226,8 +225,8 @@ if __name__ == "__main__":
         sys.exit(1)  # Exit program
 
     ultrachat_data = load_ultrachat_data(max_samples=5000)  # Load UltraChat data
-    molding_data = load_molding_data()  # Load molding data
-    all_sentences = ultrachat_data + molding_data  # Combine sentences
+    #molding_data = load_molding_data()  # Load molding data
+    all_sentences = ultrachat_data #+ molding_data  # Combine sentences
     logger.info(f"Loaded {len(all_sentences)} sentences")  # Log loaded sentences
 
     new_vocab = build_vocab(all_sentences)  # Build new vocabulary

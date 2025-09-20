@@ -15,7 +15,6 @@ logging.basicConfig(
     level=logging.INFO,  # Set logging level to INFO
     format='%(asctime)s - %(levelname)s - %(message)s',  # Define log format
     handlers=[  # Define handlers for logging
-        logging.FileHandler('logs/training2.log', encoding='utf-8'),  # Log to file
         logging.StreamHandler(sys.stdout)  # Log to standard output
     ]
 )
@@ -67,7 +66,7 @@ def load_sciqa_data():
         logger.error(f"Failed to load SciQA data: {e}")  # Log error
         return []  # Return empty list on failure
 
-
+'''
 def load_molding_data():
     """Function to load molding terms."""
     logger.info("Loading molding terms...")  # Log loading start
@@ -80,7 +79,17 @@ def load_molding_data():
     except Exception as e:
         logger.error(f"Error reading molding terms: {e}")  # Log error
         return []  # Return empty list on failure
+'''
 
+def load_molding_data():
+    """Function to load molding terms."""
+    logger.info("Loading molding terms...")  # Log loading start
+    dataset = load_dataset('scientific_papers', 'arxiv', split='train') # Loads scientific data sets
+    keywords = ['plastic', 'molding', 'injection', 'thermoplastic', 'polymer'] # Specifies using molding based data
+    plastics_data = [item['text'] for item in dataset if any(kw in item['text'].lower() for kw in keywords)] # Loop through items
+    with open('plastics_papers.txt', 'w', encoding='utf-8') as f: # Read, strip, and deduplicate lines
+        f.write('\n'.join(plastics_data)) # Write item to cache
+    return item  # Return terms
 
 def build_vocab(sentences):
     """Function to build vocabulary from sentences."""

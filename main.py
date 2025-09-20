@@ -13,7 +13,6 @@ logging.basicConfig(
     level=logging.INFO,  # Set the logging level to INFO, capturing informational messages and higher severity levels
     format='%(asctime)s - %(levelname)s - %(message)s',  # Define the log message format including time, level, and message
     handlers=[  # Specify handlers for where logs are sent
-        logging.FileHandler('logs/main.log', encoding='utf-8'),  # Log to a file named main.log in the logs directory using UTF-8 encoding
         logging.StreamHandler(sys.stdout)  # Also log to the standard output (console) for real-time viewing
     ]
 )
@@ -75,14 +74,13 @@ if __name__ == "__main__":
     logger.info(f"Using device: {device}")  # Log the device being used
     log_resources()  # Log the initial resource usage
 
-    scripts = ['spider.py', 'Training.py', 'Training2.py', 'Training3.py', 'Training4.py', 'Agent.py']  # List of scripts to run in order
+    scripts = ['training.py', 'training2.py', 'training3.py', 'training4.py', 'agent.py']  # List of scripts to run in order
     expected_outputs = [  # List of expected output files for each script
-        'molding_terms.txt',  # Output for spider.py
-        ['model.pkl', 'vocab.pkl'],  # Outputs for Training.py
-        ['model_updated.pkl', 'vocab_updated.pkl'],  # Outputs for Training2.py
-        ['model_updated_tableqa.pkl', 'vocab_tableqa.pkl'],  # Outputs for Training3.py
-        ['model_updated_dolly.pkl', 'vocab_dolly.pkl'],  # Outputs for Training4.py
-        'agent_responses.csv'  # Output for Agent.py
+        ['model.pkl', 'vocab.pkl'],  # Outputs for training.py
+        ['model_updated.pkl', 'vocab_updated.pkl'],  # Outputs for training2.py
+        ['model_updated_tableqa.pkl', 'vocab_tableqa.pkl'],  # Outputs for training3.py
+        ['model_updated_dolly.pkl', 'vocab_dolly.pkl'],  # Outputs for training4.py
+        'agent_responses.csv'  # Output for agent.py
     ]
 
     for script, outputs in zip(scripts, expected_outputs):  # Loop through each script and its expected outputs

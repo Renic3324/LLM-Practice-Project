@@ -19,7 +19,6 @@ logging.basicConfig(
     level=logging.INFO,  # Set the minimum logging level to INFO, meaning INFO and higher severity levels (WARNING, ERROR) will be logged
     format='%(asctime)s - %(levelname)s - %(message)s',  # Define the format of each log message to include timestamp, log level, and the message itself
     handlers=[  # Specify the destinations for log messages
-        logging.FileHandler('logs/training4.log', encoding='utf-8'),  # Handler to write logs to a file named training4.log with UTF-8 encoding for international character support
         logging.StreamHandler(sys.stdout)  # Handler to write logs to the standard output (console) for immediate visibility during execution
     ]
 )
@@ -82,7 +81,7 @@ def load_ultrachat_data(max_samples=5000):
     except Exception as e:
         logger.error(f"Failed to load UltraChat data: {e}")  # Log any error that occurs during dataset loading
         return []  # Return an empty list if loading fails
-
+'''
 def load_molding_data():
     """Function to load molding terms from a file, deduplicating and stripping lines."""
     logger.info("Loading molding terms...")  # Log the start of loading molding terms
@@ -95,7 +94,7 @@ def load_molding_data():
     except Exception as e:
         logger.error(f"Error reading molding terms: {e}")  # Log any error that occurs during file reading
         return []  # Return an empty list if an error occurs
-
+'''
 def update_vocab(sentences, existing_vocab):
     """Function to update the existing vocabulary with new tokens from sentences."""
     logger.info("Updating vocabulary...")  # Log the start of vocabulary update
@@ -215,8 +214,8 @@ if __name__ == "__main__":
         sys.exit(1)  # Exit the program
 
     ultrachat_data = load_ultrachat_data(max_samples=5000)  # Load UltraChat data with max samples
-    molding_data = load_molding_data()  # Load molding data
-    all_sentences = ultrachat_data + molding_data  # Combine the data
+    #molding_data = load_molding_data()  # Load molding data
+    all_sentences = ultrachat_data + #molding_data  # Combine the data
     logger.info(f"Loaded {len(all_sentences)} sentences")  # Log the number of combined sentences
 
     vocab = update_vocab(all_sentences, vocab)  # Update the vocabulary with new data

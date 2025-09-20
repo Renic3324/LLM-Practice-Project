@@ -11,7 +11,6 @@ logging.basicConfig(
     level=logging.INFO,  # Set logging level to INFO
     format='%(asctime)s - %(levelname)s - %(message)s',  # Define log format
     handlers=[  # Define handlers for logging
-        logging.FileHandler('logs/spider.log', encoding='utf-8'),  # Log to file
         logging.StreamHandler(sys.stdout)  # Log to standard output
     ]
 )

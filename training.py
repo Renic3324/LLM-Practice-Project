@@ -10,18 +10,18 @@ import re  # Import re module for regular expressions
 from model import GPTLanguageModel, tokenize  # Import GPTLanguageModel and tokenize function from model module
 from config import block_size  # Import block_size from config module
 import logging  # Import logging module for logging messages
+from datasets import load_dataset
 
 # Configure logging to record events in a file and on the console
 logging.basicConfig(
     level=logging.INFO,  # Set logging level to INFO
     format='%(asctime)s - %(levelname)s - %(message)s',  # Define log format
     handlers=[  # Define handlers for logging
-        logging.FileHandler('logs/training.log', encoding='utf-8'),  # Log to file
         logging.StreamHandler(sys.stdout)  # Log to standard output
     ]
 )
 logger = logging.getLogger(__name__)  # Get logger for current module
-
+'''
 def load_sms_data():
     """Function to load SMS spam dataset, caching locally."""
     logger.info("Loading SMS data...")  # Log loading start
@@ -58,7 +58,17 @@ def load_sms_data():
     except Exception as e:
         logger.error(f"Failed to load SMS data: {e}")  # Log error
         return []  # Return empty list on error
-
+'''
+def load_pile_data():
+    """Function to load Pile spam dataset, caching locally."""
+    logger.info("Loading Pile data...")  # Log loading start
+    dataset = load_dataset('the_pile', split='train') # Open "The Pile" data set
+    with open('pile_data.txt', 'w', encoding='utf-8') as f: # Read, strip, and deduplicate lines
+        for item in dataset: # Loop through items
+            f.write(item['text'] + '\n') # Write item to cache
+    logger.info(f"Loaded {len(lines)} Pile sentences from UCI")  # Log loaded sentences
+    return item  # Return loaded sentences
+'''
 def load_molding_data():
     """Function to load molding terms."""
     logger.info("Loading molding terms...")  # Log loading start
@@ -70,6 +80,16 @@ def load_molding_data():
     except Exception as e:
         logger.error(f"Error reading molding terms: {e}")  # Log error
         return []  # Return empty list on error
+'''
+def load_c4_data():
+    """Function to load C4 spam dataset."""
+    logger.info("Loading c4 data...")  # Log loading start
+    dataset = load_dataset('c4', 'en', split='train') # Open "C4" data set
+    with open('c4_data.txt', 'w', encoding='utf-8') as f: # Read, strip, and deduplicate lines
+        for item in dataset: # Loop through items
+            f.write(item['text'] + '\n') # Write item to cache
+    logger.info(f"Loaded {len(lines)} C4 sentences from UCI")  # Log loaded sentences
+    return item  # Return loaded sentences
 
 def build_vocab(sentences):
     """Function to build vocabulary from sentences."""
@@ -119,10 +139,10 @@ if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # Set device
     logger.info(f"Using device: {device}")  # Log device
 
-    sms_data = load_sms_data()  # Load SMS data
-    molding_data = load_molding_data()  # Load molding data
-    all_sentences = sms_data + molding_data  # Combine sentences
-    logger.info(f"Loaded {len(all_sentences)} sentences ({len(sms_data)} SMS + {len(molding_data)} molding)")  # Log loaded sentences
+    pile_data = load_pile_data()  # Load Pile data
+    c4_data = load_c4_data()  # Load c4 data
+    all_sentences = pile_data + c4_data  # Combine sentences
+    logger.info(f"Loaded {len(all_sentences)} sentences ({len(sms_data)} Pile + {len(molding_data)} C4)")  # Log loaded sentences
 
     vocab = build_vocab(all_sentences)  # Build vocabulary
     sequences = tokenize(all_sentences, vocab, block_size=block_size)  # Tokenize sentences
